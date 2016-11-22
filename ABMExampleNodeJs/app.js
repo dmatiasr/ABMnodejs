@@ -4,11 +4,18 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+
 
 //var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+
+mongoose.connect('mongodb://localhost/ABMusers',function (err,res) {
+  if (err) console.log ("Error de conexion a la base de datos"+err);
+  else console.log ('Conexion a DB establecida');
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
