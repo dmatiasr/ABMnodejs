@@ -8,3 +8,7 @@ block content
   label email
   input(type='text', name='email')
   input(type='submit',value='Registrar')
+ ul#emails
+  if (typeof(alluser) != "undefined")
+   each item in allusers
+    li= item.email 
