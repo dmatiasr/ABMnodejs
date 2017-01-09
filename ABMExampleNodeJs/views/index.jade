@@ -7,8 +7,9 @@ block content
   input(type='text', name='name')
   label email
   input(type='text', name='email')
+  label Password
+  input(type='password', name='password')
   input(type='submit',value='Registrar')
  ul#emails
-  if (typeof(alluser) != "undefined")
-   each item in allusers
-    li= item.email 
+  each item in allusers
+   li= item.name 

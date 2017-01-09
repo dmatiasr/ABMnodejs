@@ -1,34 +1,47 @@
 //instance to user.js
 var userInstance = require('../models/user');
 var userdao = require('../dao/userdao');
+var express = require('express');
+var router= express.Router();
 
-module.exports = function (app) {
 
-	app.get('/',function (req, res) {
-	//	var query= userdao.findAllU(req,res);
-	//	if (query==null) res.render('index', { title: 'Lista de usuarios' });
-	//	else res.render('index', { title: 'Lista de usuarios', allusers: query });
-		res.render('index', { title: 'Lista de usuarios' });		
-	})
+router.get('/',function (req, res) {
+	userdao.findAllU(function (e,data) {
+		if (e){
+			console.log(e);
+			res.render('index', { title: 'Lista de usuarios' });	
+		} 
+		else {
+			res.render('index', { title: 'Lista de usuarios', allusers: data });
+		}		
+	});		
+})
+
+router.post('/',function (req, res) {
+	var name = req.body.name;
+	var email= req.body.email;
+	var pass= req.body.password;
+
+	req.checkBody('name','Debe ingresar un nombre').notEmpty();
+	req.checkBody('email','Debe ingresar un email').notEmpty();
+	req.checkBody('email','Debe ser valido').isEmail();
+	req.checkBody('password','Debe ingresar su contraseña').notEmpty();
+	var error= req.validationErrors();
 	
-	app.post('/',function (req, res) {
-		
-		console.log('Pase por aqui '+ req.name);
-	 	
-	 	userdao.addU(req.params.name, req.params.email, function (e, data) {
-	 		if (e) console.log('error de creacion '+e);
-	 		if (data=='ok'){
-	 			res.status(200).render('index', { title: 'Lista de usuarios' });
-	 		} 			
-	 		else {
-	 			res.status(500).render('index', { title: 'Lista de usuarios' });	
-	 		} 
-	 	});
-		
-	})
-//	app.get('/allusers', function (req, res) {
-//		var query = userdao.findAllU(req,res);
-//		if (query==null) res.render('index', { title: 'Lista de usuarios' });
-//		else res.render('index', { title: 'Lista de usuarios' },query);
-//	})
-}
+	if (error){
+		res.redirect('/');
+	}
+	else{ 
+ 		userdao.addU(name, email,pass, function (e, data) {
+ 			if (e) console.log('error de creacion '+e);
+ 			if (data=='ok'){
+ 				res.redirect('/');
+ 			} 			
+ 			else {
+ 				res.redirect('/');
+ 			} 
+ 		});
+	}
+})
+
+module.exports=router;

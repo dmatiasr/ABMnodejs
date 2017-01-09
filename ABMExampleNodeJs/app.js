@@ -5,10 +5,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var expressValidator= require('express-validator');
 
-
-//var routes = require('./routes/index');
-var users = require('./routes/users');
+var routes = require('./routes/index');
+//var users = require('./routes/users');
 
 var app = express();
 
@@ -29,13 +29,26 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(expressValidator ( {
+  errorFormatter : function (param, msg, value) {
+     var namespace = param.split('.'),
+       root=namespace.shift(),
+       formParam=root;
+     while(namespace.length){
+      formParam+= '['+namespace.shift()+ ']';
+    } 
+    return{
+      param: formParam,
+      msg: msg,
+      value:value
+    } 
+  }
+}));
 
 //Routes
-//app.use('/', routes);
-//app.use('/users', users);
 
-//Abstrae el llamado de cada ruta.
-require('./routes')(app);
+app.use('/', routes);
+//app.use('/users', users);
 
 
 // catch 404 and forward to error handler

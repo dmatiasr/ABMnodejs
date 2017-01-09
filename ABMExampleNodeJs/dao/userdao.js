@@ -1,11 +1,11 @@
-	var userModel= require('../models/user');
-
-	//POST 
-	exports.addU= function (pname,pemail, callback){ 
-	 	
+var userModel= require('../models/user');
+	
+	exports.addU= function (pname,pemail,pass, callback){ 
+	
 	 	var addUserModel = new userModel({
 	 		name : pname,
-	 		email: pemail
+	 		email: pemail,
+	 		pass : pass
 	 	});
 
 	 	addUserModel.save(function (err) {
@@ -21,39 +21,15 @@
 	 		} 
 	 	});	 
 	}	
-
-
-
-	//{
-		//console.log('POST '+req.body);
-	 	
-	 //	var addUserModel = new userModel({
-	 //		name : pname,
-	 //		email: pemail
-	 //	});
-	 	
-	// 	addUserModel.save(function (err) {
-	 //		if (!err){
-	 	//		console.log('usuario guardado');
-	 	//		return true;
-	 	//	} 
-	 	//	else{
-	 	//		console.log ('ERROR add '+e);
-	 	//		return false;	
-	 	//	} 
-	// 	});
 		
-		//res.send(addUserModel);
-	//}
-
-	//GET
-	exports.findAllU= function (req, res) {
-		userModel.find( {},function (err,us) {
+	exports.findAllU= function ( callback ) {
+		userModel.find(function (err,us) {
 			if (!err){ 
-				return (us);
+				console.log('Users'+us);
+				callback (null,us);
 			}else {
-				console.log ('ERROR findAll '+err);
-				return null;
+				console.log('Error findall '+err);
+				callback(err,us);
 			}
 				
 		});
