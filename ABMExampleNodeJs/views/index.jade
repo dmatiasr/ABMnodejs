@@ -12,4 +12,12 @@ block content
   input(type='submit',value='Registrar')
  ul#emails
   each item in allusers
-   li= item.name +" "+ item.id 
+   li= item.id +" - "+ item.name+" - "+item.email+" - "+item.pass
+ form(method='put')
+  label Nombre A actualizar
+  input(type='text', name='name')
+  label email a actualizar
+  input(type='text', name='email')
+  label Password a actualizar
+  input(type='password', name='password')
+  input(type='submit',value='Actualizar')

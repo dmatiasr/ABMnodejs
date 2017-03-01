@@ -17,11 +17,11 @@ router.get('/',function (req, res) {
 	});
 })
 
-router.post('/',function (req, res) {
+router.post('/add/',function (req, res) {
 	var name = req.body.name;
 	var email= req.body.email;
 	var pass= req.body.password;
-	console.log(name+email+pass)
+
 	req.checkBody('name','Debe ingresar un nombre').notEmpty();
 	req.checkBody('email','Debe ingresar un email').notEmpty();
 	req.checkBody('email','Debe ser valido').isEmail();
@@ -29,25 +29,25 @@ router.post('/',function (req, res) {
 	var error= req.validationErrors();
 
 	if (error){
-		console.log('erro redirect');
+		console.log('Algo paso');
 		res.redirect('/');
 	}
 	else{
  		userdao.addU(name, email,pass, function (e, data) {
  			if (e) console.log('error de creacion '+e);
  			if (data=='ok'){
+				res.status(200);
  				res.redirect('/');
  			}
  			else {
+				res.status(409);
  				res.redirect('/');
  			}
  		});
 	}
 })
 router.delete('/delete/:id', function(req, res){
-	console.log("ENTRE");
 	var id = req.params.id;
-	console.log("params"+id);
 	userdao.removeUser(id, function (e,data) {
 		if (e) {
 			console.log('No se ha podido eliminar el usuario')
@@ -57,6 +57,29 @@ router.delete('/delete/:id', function(req, res){
 			res.status(200).send();
 		}
 
+	})
+})
+
+router.put('/update/:id', function(req,res){
+	var id = req.params.id;
+	var name = req.body.name;
+	var email= req.body.email;
+	var passd=req.body.pass;
+	console.log(id+name+email+passd)
+	userdao.updateU(id,name,email,passd,function(e,data){
+		if (e){
+			console.log('Algo ocurrió en la actualizacion')
+			res.status(409).send();
+		}else{
+			if (data=="ok"){
+				console.log("actualizacion lograda")
+				res.status(201).send();
+			}
+			if(data=="nosave"){
+				console.log("no se pudo actualizar ni guardar en DB");
+				res.status(500).send();
+			}
+		}
 	})
 
 

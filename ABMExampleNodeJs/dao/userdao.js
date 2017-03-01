@@ -54,18 +54,38 @@ var userModel= require('../models/user');
 		});
 	}
 
-
-
 	//PUT UPDATE
-	//exports.updateU= function (req, res) {
-	//	userModel.findByID(req.params.id, function (err,user) {
-	//		user.name = user.body.name;
-	//		user.email= user.body.email;
+	exports.updateU= function (id,name,email,pass, callback) {
 
-	//	});
-	//	userModel.save(function (err) {
-	//		if (!err) console.log ('Usuario actualizado');
-	//		else console.log ('ERROR update '+err);
-	//	});
-	//}
+		userModel.findById({_id: id}, function (err,user) {
+			if (err){
+				console.log("no se pudo actualizar"+err);
+				ok="no";
+				callback(err,ok)
+			}else{
+					if(user){
+						if(name) user.name=name;
+						if (email) user.email=email;
+						if (pass) user.pass=pass;
+						user.save(function (err) {
+							if (err){
+								console.log('No se pudo guardar el usuario actualizado'+err)
+								ok="nosave"
+								callback(err,ok);
+							}
+							else{
+								console.log("OK")
+								ok="ok"
+								callback(err,ok);
+							}
+						})
+					}else{
+						console.log("nofound");
+						ok="nofound"
+						callback(err,ok)
+					}
+
+			}
+		});
+	}
 	//DELETE
