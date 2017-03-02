@@ -40,7 +40,7 @@ var userModel= require('../models/user');
 	exports.removeUser = function (id, callback) {
 		console.log(id)
 		userModel.findByIdAndRemove({_id: id}, function (err,user) {
-			console.log("paso "+ user);
+			console.log("paso "+ user);	
 			if (err) console.log("No se pudo eliminar"+err);
 			else callback(err,user);
 		});

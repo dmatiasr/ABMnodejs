@@ -13,7 +13,9 @@ block content
  ul#emails
   each item in allusers
    li= item.id +" - "+ item.name+" - "+item.email+" - "+item.pass
- form(method='put')
+ form(method='post')
+  label ingrese id
+  input(type='text', name='id')
   label Nombre A actualizar
   input(type='text', name='name')
   label email a actualizar

@@ -1,6 +1,6 @@
 //instance to user.js
 var userInstance = require('../models/user');
-var userdao = require('../dao/userdao');
+var userdao = require('../connectionDB/userconnection');
 var express = require('express');
 var router= express.Router();
 
@@ -17,7 +17,7 @@ router.get('/',function (req, res) {
 	});
 })
 
-router.post('/add/',function (req, res) {
+router.post('/',function (req, res) {
 	var name = req.body.name;
 	var email= req.body.email;
 	var pass= req.body.password;
@@ -65,6 +65,7 @@ router.put('/update/:id', function(req,res){
 	var name = req.body.name;
 	var email= req.body.email;
 	var passd=req.body.pass;
+
 	console.log(id+name+email+passd)
 	userdao.updateU(id,name,email,passd,function(e,data){
 		if (e){
@@ -84,15 +85,6 @@ router.put('/update/:id', function(req,res){
 
 
 })
-
-
-
-
-
-
-
-
-
 
 
 module.exports=router;
