@@ -5,17 +5,29 @@ var express = require('express');
 var router= express.Router();
 
 
-router.get('/',function (req, res) {
-	userdao.findAllU(function (e,data) {
-		if (e){
-			console.log(e);
-			res.render('index', { title: 'Lista de usuarios' });
+//router.get('/',function (req, res) {
+//	userdao.findAllU(function (e,data) {
+//		if (e){
+//			console.log(e);
+//			res.render('index', { title: 'Lista de usuarios' });
+//		}
+//		else {
+//			res.render('index', { title: 'Lista de usuarios', allusers: data });
+//		}
+//	});
+//})
+
+router.get('/',function (req,res) {
+	userdao.findAllU(function(err,users){
+		if (err){
+			res.status(404).send();
 		}
-		else {
-			res.render('index', { title: 'Lista de usuarios', allusers: data });
+		else{
+			res.json(users);
 		}
-	});
-})
+
+	})
+});
 
 router.post('/',function (req, res) {
 	var name = req.body.name;
@@ -36,12 +48,12 @@ router.post('/',function (req, res) {
  		userdao.addU(name, email,pass, function (e, data) {
  			if (e) console.log('error de creacion '+e);
  			if (data=='ok'){
-				res.status(200);
- 				res.redirect('/');
+				res.status(200).send();
+				//res.redirect('/');
  			}
  			else {
-				res.status(409);
- 				res.redirect('/');
+				res.status(409).send();
+		//		res.redirect('/');
  			}
  		});
 	}
