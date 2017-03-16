@@ -1,9 +1,68 @@
 <div class="container" ng-controller="UserController">
   <div ng-init=load_users()>
-    <div ng-repeat='user in users'>
-      <ul>
-        <li>{{user.name}}</li>
-      </ul>
-    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <td>
+            <div ng-show="msg=='error'">
+              <strong class="alert alert-warning">{{msg}}</strong>
+            </div>
+            <div ng-show="msg!='error'">
+              <strong class="alert alert-success">{{msg}}</strong>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <th>
+            Nombre
+          </th>
+          <th>
+            Email
+          </th>
+          <th>
+            Password
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <input class="form-control" ng-model="user.name">
+          </td>
+          <td>
+            <input class="form-control" ng-model="user.email">
+          </td>
+          <td>
+            <input class="form-control" type="password" ng-model="user.password">
+          </td>
+          <td>
+            <button class="btn btn-primary" ng-click="create()"> Agregar </button>
+          </td>
+          <td>
+            <button class="btn btn-info" ng-click=update(user._id)>Actualizar</button>
+          </td>
+          <td>
+            <button class="btn btn-info" ng-click="clear()">Limpiar</button>
+          </td>
+        </tr>
+        <tr ng-repeat="user in users | orderBy:'name'">
+          <td>
+            {{user.name}}
+          </td>
+          <td>
+            {{user.email}}
+          </td>
+          <td>
+            <button  class=" btn btn-danger" ng-click="delete(user._id)">Eliminar</button>
+          </td>
+          <td>
+            <button class="btn btn-warning" ng-click="edit(user._id)">Editar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+      </div>
   </div>
 </div>

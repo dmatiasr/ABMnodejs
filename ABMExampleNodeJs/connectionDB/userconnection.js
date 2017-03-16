@@ -1,6 +1,6 @@
 var userModel= require('../models/user');
 
-	//check
+
 	exports.addU= function (pname,pemail,pass, callback){
 
 	 	var addUserModel = new userModel({
@@ -40,7 +40,7 @@ var userModel= require('../models/user');
 	exports.removeUser = function (id, callback) {
 		console.log(id)
 		userModel.findByIdAndRemove({_id: id}, function (err,user) {
-			console.log("paso "+ user);	
+			console.log("paso "+ user);
 			if (err) console.log("No se pudo eliminar"+err);
 			else callback(err,user);
 		});
@@ -49,8 +49,15 @@ var userModel= require('../models/user');
 	//TO-DO
 	exports.findByIDU= function(id, callback){
 		userModel.findById(id,function (err,us) {
-			if (!err) callback(err,us);
-			else console.log ('ERROR findByID '+err);
+			if (!err){
+				console.log(us);
+				callback(err,us);
+
+			}
+			else{
+				console.log ('ERROR findByID '+err);
+				callback(err,us);
+			}
 		});
 	}
 

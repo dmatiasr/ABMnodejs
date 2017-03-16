@@ -29,6 +29,16 @@ router.get('/',function (req,res) {
 	})
 });
 
+router.get('/:id', function (req,res) {
+	userdao.findByIDU(req.params.id, function (err,user) {
+		if (err){
+			res.status(404).send();
+		}else{
+			res.json(user);
+		}
+	})
+});
+
 router.post('/',function (req, res) {
 	var name = req.body.name;
 	var email= req.body.email;
@@ -42,7 +52,7 @@ router.post('/',function (req, res) {
 
 	if (error){
 		console.log('Algo paso');
-		res.redirect('/');
+		res.status(409);
 	}
 	else{
  		userdao.addU(name, email,pass, function (e, data) {
