@@ -8,6 +8,10 @@ var mongoose = require('mongoose');
 var expressValidator= require('express-validator');
 var cors = require('cors')
 
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
+
 var routes = require('./routes/index');
 //var users = require('./routes/users');
 
@@ -29,6 +33,17 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+//passport
+app.use(passport.initialize());
+app.use(require('express-session')({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(expressValidator ( {
@@ -52,10 +67,30 @@ app.use(expressValidator ( {
 app.use('/', routes);
 //app.use('/users', users);
 
+//passport config
+var User = require('./models/user');
+
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser())
+
+//passport.serializeUser(function(user,done){
+//  done(null,user._id);
+//})
+
+//passport.deserializeUser(function(user,done){
+  //  console.log(mongoose.Schema.Types.ObjectId(id));
+  //  var userId= mongoose.Schema.Types.ObjectId(id);
+  //  User.findById(userId, function (err,user) {
+  //    done(err,user);
+  //  })
+//})
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  console.log("HEREEE")
   var err = new Error('Not Found');
   err.status = 404;
   next(err);

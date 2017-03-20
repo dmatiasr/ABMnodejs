@@ -3,8 +3,16 @@ var app = angular.module("app",['ngRoute']);
   app.config(function ($routeProvider){
 
     $routeProvider
-      .when('/',{ //o trasladar app mas arriba o salir y ubicar bien el path de las viastas
+      .when('/users',{
         templateUrl : './views/users.html',
+        controller : 'UserController'
+      })
+      .when('/home',{
+        templateUrl : './views/home.html',
+        controller : 'HomeController'
+      })
+      .when('/register',{
+        templateUrl : './views/register.html',
         controller : 'UserController'
       })
       .otherwise({

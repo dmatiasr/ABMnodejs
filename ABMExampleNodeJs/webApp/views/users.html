@@ -1,25 +1,30 @@
 <div class="container" ng-controller="UserController">
-  <div ng-init=load_users()>
-    <div class="input-group col-md-12">
-      <input class="  search-query form-control" type="text" placeholder="Buscar" ng-model="busqueda">
-      <small>Buscando : {{busqueda}}</small>
-      <div ng-repeat="user in users | filter : busqueda">
-        <div class="" ng-show="user.name==busqueda">
-          <small>Result:</small>
-          <strong>{{user.name}} - {{user.email}}</strong>
+    <div ng-init="load_users()">
+      <div>
+        <div class="input-group col-md-12">
+          <input class="search-query form-control" type="text" placeholder="Buscar" ng-model="busqueda">
+          <small>Buscando : {{busqueda}} </small>
+        </div>
+        <div ng-repeat="user in users | filter : busqueda">
+          <div class="" ng-show="user.name==busqueda">
+            <small>Result:</small>
+            <strong>{{user.name}} - {{user.email}}</strong>
+          </div>
         </div>
 
       </div>
     </div>
+
     <table class="table">
       <thead>
+        
         <tr>
           <td>
            <div ng-show="msg=='error'">
               <strong class="alert alert-warning" >{{msg}}</strong>
             </div>
-            </td>
-            <td>
+          </td>
+          <td>
             <div ng-show="msg!='error'">
               <strong class="alert alert-success" >{{msg}}</strong>
             </div>
@@ -55,6 +60,7 @@
           <td>
             <button class="btn btn-info" ng-click=update(user._id)>Actualizar</button>
           </td>
+
           <td>
             <button class="btn btn-info" ng-click="clear()">Limpiar</button>
           </td>
@@ -75,7 +81,4 @@
         </tr>
       </tbody>
     </table>
-
-      </div>
   </div>
-</div>

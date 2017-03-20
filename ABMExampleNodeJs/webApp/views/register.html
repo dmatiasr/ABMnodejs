@@ -1,0 +1,21 @@
+<div class="container" >
+  <div ng-controller=UserController>
+  <form class="form-group">
+      <tr>
+        <td>
+          <label  for="Nombre">Nombre</label>
+          <input class="form-control" type="text"  ng-model="user.name">
+        </td>
+        <td>
+          <label for="Email">Email</label>
+          <input class="form-control" type="email"  ng-model="user.email">
+        </td>
+        <td>
+          <label for="Password">Password</label>
+          <input class="form-control" type="password" ng-model="user.password">
+        </td>
+        <button type="button" class="btn btn-info" ng-click=" create()" > Registrarse</button>
+      </tr>
+    </form>
+  </div>
+</div>

@@ -1,21 +1,11 @@
 //instance to user.js
 var userInstance = require('../models/user');
+var usercontroller= require('./users');
 var userdao = require('../connectionDB/userconnection');
 var express = require('express');
 var router= express.Router();
+var passport=require('passport');
 
-
-//router.get('/',function (req, res) {
-//	userdao.findAllU(function (e,data) {
-//		if (e){
-//			console.log(e);
-//			res.render('index', { title: 'Lista de usuarios' });
-//		}
-//		else {
-//			res.render('index', { title: 'Lista de usuarios', allusers: data });
-//		}
-//	});
-//})
 
 router.get('/',function (req,res) {
 	userdao.findAllU(function(err,users){
@@ -104,9 +94,63 @@ router.put('/update/:id', function(req,res){
 			}
 		}
 	})
+})
 
+router.get('/register',function (req,res) {
+	res.status(200).send();
+})
+
+router.post('/register',function (req,res) {
+	//usercontroller.register(req,res);
+	console.log(req.body);
+
+	var aux={
+		username:req.body.username,
+		name:req.body.name,
+		email:req.body.email,
+		password:req.body.password
+	}
+	console.log(aux);
+	userInstance.register(new userInstance({
+		username: req.body.username,
+		name: req.body.name,
+		email : req.body.email,
+	}), req.body.password,function (error,user) {
+		if (error){
+			console.log('Error CONSOLE :'+error);
+			res.status(401).send(); //Unaothorized
+		}
+		console.log("USUARIO "+user);
+		passport.authenticate('local')(req, res, function () {
+          res.status(200).send();
+    })
+	})
+})
+
+router.post('/login', passport.authenticate('local'), function(req, res) {
+		res.status(200).send();
+})
+
+router.get('/login', function (req,res) {
+	console.log(req.user.name);
+	userInstance.find({name : req.user.name}, function(err,user){
+		if (error){
+			res.status(404).send();
+		}else{
+				if (!user){
+					res.status(401).send()
+				}else{
+					res.json(user);
+				}
+		}
+	})
 
 })
+
+router.get('/logout',function (req,res) {
+	req.logout();
+	res.status(200).send();
+});
 
 
 module.exports=router;
