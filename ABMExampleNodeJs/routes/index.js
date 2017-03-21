@@ -19,7 +19,7 @@ router.get('/',function (req,res) {
 	})
 });
 
-router.get('/:id', function (req,res) {
+router.get('/findById/:id', function (req,res) {
 	userdao.findByIDU(req.params.id, function (err,user) {
 		if (err){
 			res.status(404).send();
@@ -128,20 +128,18 @@ router.post('/register',function (req,res) {
 })
 
 router.post('/login', passport.authenticate('local'), function(req, res) {
-		res.status(200).send();
+	console.log("SESION DE: "+req.session.passport.user);
+	res.status(200).send();
 })
 
 router.get('/login', function (req,res) {
-	console.log(req.user.name);
-	userInstance.find({name : req.user.name}, function(err,user){
-		if (error){
+	var uname=req.session.passport.user
+	userInstance.find({username : uname}, function(err,user){
+		if (err){
 			res.status(404).send();
 		}else{
-				if (!user){
-					res.status(401).send()
-				}else{
-					res.json(user);
-				}
+			console.log("user "+user);
+			res.json(user);
 		}
 	})
 
