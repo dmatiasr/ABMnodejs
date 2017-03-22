@@ -25,9 +25,9 @@ angular.module('app').controller('UserController', function ($scope, $http,$loca
         }).success( function (data,status) {
           console.log(status);
           load_users();
-          $scope.msg="ok";
+          $scope.msg="Creacion exitosa";
         }).error(function(data,status){
-          $scope.msg="error"
+          $scope.msg="Error en creacion"
         })
       }
       $scope.delete=function (id) {
@@ -35,14 +35,14 @@ angular.module('app').controller('UserController', function ($scope, $http,$loca
         .success(function (data,status) {
           alert(status)
           load_users();
-          $scope.msg ="ok"
+          $scope.msg ="Usuario eliminado"
         }).error(function (data,status) {
-          $scope.msg="error"
+          $scope.msg="No se pudo eliminar el usuario"
         });
       }
 
       $scope.edit = function(id){
-        $http.get(host+id).then(function (response) {
+        $http.get(host+'findById/'+id).then(function (response) {
           if (response.status==200){
             console.log(response.data);
             $scope.user=response.data;
@@ -66,10 +66,11 @@ angular.module('app').controller('UserController', function ($scope, $http,$loca
             $scope.msg="Guardado"
             load_users();
           }else{
-            $scope.msg="error"
+            $scope.msg="No guardado"
           }
         })
       }
+
       $scope.clear= function () {
         $scope.user="";
       }
@@ -86,14 +87,49 @@ angular.module('app').controller('UserController', function ($scope, $http,$loca
         }).success(function(data,status){
           if(status==200){
             $scope.msg='Registro exitoso';
+            $location.path("/login");
           }else{
             console.log("algo paso");
           }
         }).error(function (data,status) {
             if (status==401){
               $scope.msg='Nombre de usuario existente';
+              $location.path("/register");
             }
-
         });
       }
+
+      $scope.login= function () {
+        $http.post(host+'login',{
+          username: $scope.user.username,
+          password: $scope.user.password
+        }).success(function (data,status) {
+          console.log(status);
+          if (status==200){
+            console.log('entre');
+            $scope.msg='Login correcto';
+            $location.path("/users");
+
+          }
+        }).error(function (data,status) {
+          console.log(status);
+          if (status!=200){
+            $scope.msg='Login incorrecto';
+          $location.path("/login");
+          }
+        });
+      }
+
+      $scope.getLogin= function () {
+        $http.get(host+'login').then(function (data,status) {
+          alert(data);
+          if(status==200){
+            $scope.userlog=data;
+          }else{
+            $scope.userlog='';
+          }
+        });
+      }
+
+
 })
