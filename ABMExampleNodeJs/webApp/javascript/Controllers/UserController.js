@@ -73,4 +73,27 @@ angular.module('app').controller('UserController', function ($scope, $http,$loca
       $scope.clear= function () {
         $scope.user="";
       }
+
+      $scope.register = function(){
+        console.log($scope.user.username);
+        $http.post(host+'register',
+        {
+          username : $scope.user.username,
+          name : $scope.user.name,
+          email: $scope.user.email,
+          password: $scope.user.password
+
+        }).success(function(data,status){
+          if(status==200){
+            $scope.msg='Registro exitoso';
+          }else{
+            console.log("algo paso");
+          }
+        }).error(function (data,status) {
+            if (status==401){
+              $scope.msg='Nombre de usuario existente';
+            }
+
+        });
+      }
 })

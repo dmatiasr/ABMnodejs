@@ -119,11 +119,17 @@ router.post('/register',function (req,res) {
 		if (error){
 			console.log('Error CONSOLE :'+error);
 			res.status(401).send(); //Unaothorized
+		}else{
+			if (user){
+				passport.authenticate('local')(req, res, function () {
+					res.status(200).send();
+				})
+			}else{
+				res.status(401).send();
+			}
+
 		}
-		console.log("USUARIO "+user);
-		passport.authenticate('local')(req, res, function () {
-          res.status(200).send();
-    })
+
 	})
 })
 
