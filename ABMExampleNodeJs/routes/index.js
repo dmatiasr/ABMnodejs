@@ -139,12 +139,16 @@ router.post('/login', passport.authenticate('local'), function(req, res) {
 })
 
 router.get('/login', function (req,res) {
-	var uname=req.session.passport.user
-	userInstance.find({username : uname}, function(err,user){
+	console.log("Entre al GET LOGIN api");
+	//	var uname=req.session.passport.user
+	//console.log("GET LOGIN API USERNAME "+req.session.passport.user);
+	userInstance.find({username : req.session.passport.user}, function(err,user){
+		console.log("Entre");
 		if (err){
+			console.log("Error-login "+err);
 			res.status(404).send();
 		}else{
-			console.log("user "+user);
+			console.log("user encontrado y logueado : "+user);
 			res.json(user);
 		}
 	})

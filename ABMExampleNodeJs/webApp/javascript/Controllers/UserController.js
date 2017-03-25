@@ -106,7 +106,7 @@ angular.module('app').controller('UserController', function ($scope, $http,$loca
         }).success(function (data,status) {
           console.log(status);
           if (status==200){
-            console.log('entre');
+            console.log('entre a post login');
             $scope.msg='Login correcto';
             $location.path("/users");
 
@@ -120,16 +120,24 @@ angular.module('app').controller('UserController', function ($scope, $http,$loca
         });
       }
 
-      $scope.getLogin= function () {
-        $http.get(host+'login').then(function (data,status) {
-          alert(data);
-          if(status==200){
-            $scope.userlog=data;
+
+      getLogin= function () {
+        $http.get(host+'login').then(function (res) {
+          console.log("Entre al getLOgin");
+          alert(res);
+          alert("status "+res.status)
+          console.log();
+          if(res.status==200){
+            $scope.userlog=res.data;
           }else{
             $scope.userlog='';
           }
+        }, function(res){
+          console.log(res.status);
         });
       }
-
+      getLogin();
+      console.log("Scope: "+$scope);
+      console.log("userlog "+$scope.userlog);
 
 })

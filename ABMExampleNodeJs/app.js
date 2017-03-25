@@ -1,4 +1,5 @@
 var express = require('express');
+const https= require('https');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -6,7 +7,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var expressValidator= require('express-validator');
-var cors = require('cors')
+
+const fs = require('fs');
+//var cors = require('cors')
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
@@ -28,7 +31,13 @@ app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(cors());
+//app.use(cors());
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -73,21 +82,6 @@ var User = require('./models/user');
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser())
-
-//passport.serializeUser(function(user,done){
-//  done(null,user._id);
-//})
-
-//passport.deserializeUser(function(user,done){
-  //  console.log(mongoose.Schema.Types.ObjectId(id));
-  //  var userId= mongoose.Schema.Types.ObjectId(id);
-  //  User.findById(userId, function (err,user) {
-  //    done(err,user);
-  //  })
-//})
-
-
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

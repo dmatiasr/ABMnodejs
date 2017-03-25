@@ -1,5 +1,8 @@
 <div class="container" ng-controller="UserController">
     <div ng-init="load_users()">
+      <div >
+      <strong><small>usuario:{{userlog}}</small></strong>  
+      </div>
       <div>
         <div class="input-group col-md-12">
           <input class="search-query form-control" type="text" placeholder="Buscar" ng-model="busqueda">
